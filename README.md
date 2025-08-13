@@ -1,2 +1,2 @@
 # Examples for CryptoAgentOS
-Examples of Agents, Services, Actions, Tasks, and everything
+Examples for Agents in CryptoAgentOS, including Services, Actions, Tasks, and everything
