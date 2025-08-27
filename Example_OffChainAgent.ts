@@ -111,7 +111,7 @@ export class ExampleAgentService extends Service {
     apiService:ApiService|undefined;
     dataSource:DataSource;
     agentType:AgentType;
-    data:ExampleOnChainData[];
+    data:ExampleOffChainData[];
     capabilityDescription =
         'This is a task service which is attached to the agent through the CryptoAgentOS.';
 
@@ -125,7 +125,7 @@ export class ExampleAgentService extends Service {
         // load instance of ApiService
         service.apiService = runtime.getService(ApiService.serviceType) as ApiService;
         // load or init some args
-        service.setAgentType('ONCHAIN');
+        service.setAgentType('OFFCHAIN');
         service.setDataSource('LOCAL');
         service.data = [];
         // TODO
@@ -152,10 +152,13 @@ export class ExampleAgentService extends Service {
 
     public async getDataFromInternet(){
         // TODO
-        const new_data:ExampleOnChainData = {
-            symbol: "BTCUSDT",
-            price: 119477.00,
-            time: "2025-08-13:12:52:00"
+        const new_data:ExampleOffChainData = {
+            id: 123,
+            symbol: "BTC",
+            url: "https://crypto.news/bitcoin-price-could-hit-1m-chainlink-founder-says/",
+            title: "Bitcoin price could hit $1m, Chainlink founder says",
+            time: "Aug 27, 2025 at 02:33 AM GMT+8",
+            content: "Bitcoin price continued its recent crash today, Aug. 26, reaching its lowest level since July 10. Summary: Sergey Nazarov believes that Bitcoin price has a strong path to $1 million over time.He sees the ongoing adoption by pension funds, hedge funds, and family offices as the next major catalyst  Other top analysts believe that the BTC price will continue rising over time. Bitcoin has entered a correction after falling 11% from its year-to-date high. Still, Sergey Nazarov, the founder of Chainlink , the $16 billion coin, believes that it can jump to $1 million over time. Chainlink’s founder delivers a bold Bitcoin price prediction In a CoinDesk interview, Nazarov became the latest major player to predict that Bitcoin price will jump to $1 million. With BTC trading at $109,000, it needs to jump by 817% to reach that target. Such a move would push its fully diluted valuation to $21 trillion, which is lower than gold’s valuation of $23 trillion.  Nazarov believes that the main catalyst for the next move to $1 million will be accumulation by sovereign wealth funds, family offices, and pension funds. He estimates that these funds may allocate at least 5% of their assets to crypto. Nazarov joins other popular individuals who have delivered bold Bitcoin price predictions. For example, Cardano’s Charles Hoskinson believes that it can jump to between $250,000 and $500,000 in the next 12 to 24 months, citing the rising crypto adoption, regulatory clarity, including the CLARITY Act, and Bitcoin DeFi adoption.",
         }
         this.data.push(new_data);
     }
@@ -178,15 +181,14 @@ export class ExampleAgentService extends Service {
         return 'Hello World!';
     }
 
-    public generatePrompt(chain = 'BTCUSDT'):string{
-        let prompt = "You are an " + chain + 
-        " cryptocurrency trading analyst. The recent price and auxiliary information is given in chronological order below:\n";
+    public generatePrompt(chain = 'BTC'):string{
+        let prompt = `You are an ${chain.toUpperCase()} cryptocurrency trading analyst. There are some articles about cryptocurrency today, and an analyst has completed the summary. You are required to analyze the following summary of these articles:`;
         for(let i = 0; i < this.data.length; i++){
             if(this.data[i].symbol === chain){
-                prompt += `Price: ${this.data[i].price}, Time: ${this.data[i].time};\n\n`;
+                prompt += `Ttile: ${this.data[i].title}, Time: ${this.data[i].time}, Content: ${this.data[i].content};\n\n`;
             }
         }
-        prompt += 'Write one concise paragraph to analyze the recent information and estimate the market trend accordingly.';
+        prompt += 'Write one concise paragraph to analyze the summary and estimate the market trend accordingly.';
         return prompt;
     }
 
