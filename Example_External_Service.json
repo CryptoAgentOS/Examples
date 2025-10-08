@@ -1,0 +1,11 @@
+{
+  "name": "reddit",
+  "type": "off-chain",
+  "url_report_api": "https://arham306-news-analyzer.hf.space/newsAnalyzer",
+  "launch_cmd": "",
+  "url_ping": "",
+  "url_stop": "",
+  "max_retry_launch_times": 5,
+  "max_retry_ping_times": 3,
+  "Bearer_Token": ""
+}
